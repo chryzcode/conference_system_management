@@ -3,6 +3,7 @@ from django import forms
 from .models import *
 from django.contrib.auth.forms import UserCreationForm
 
+#custom signup/ register form
 class SignupForm(UserCreationForm):
     full_name = forms.CharField(max_length = 200)
     email = forms.EmailField()
@@ -20,6 +21,8 @@ class SignupForm(UserCreationForm):
         self.fields['password1'].widget.attrs['class']= 'form-control'
         self.fields['password2'].widget.attrs['class']= 'form-control'
 
+
+# add and edit conference form
 class ConferenceForm(ModelForm):
     class Meta:
         model = Conference
@@ -28,9 +31,16 @@ class ConferenceForm(ModelForm):
 
         widgets={
             'title':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Conference title'}),
-            'package_price':forms.NumberInput(attrs={'class':'form-control', 'placeholder':'$ Package Price'}),
-            'package_description':forms.Textarea(attrs={'class':'form-control',  'placeholder':'Package description...'}),
+            'description':forms.Textarea(attrs={'class':'form-control', 'placeholder':'Conference description'}),
+            'start_date':forms.Textarea(attrs={'class':'form-control',  'placeholder':'The first day of the conference'}),
+            'end_date':forms.Textarea(attrs={'class':'form-control',  'placeholder':'The last day of the conference'}),
         }
+
+        def user (self, host):
+            self.host = host.id
+
+        def __init__(self, *args, **kwargs):
+            super(UserWalletForm, self).__init__(*args, **kwargs)
 
 
 

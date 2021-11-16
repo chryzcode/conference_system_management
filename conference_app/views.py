@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import *
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -52,3 +53,16 @@ def logoutUser(request):
 
 def home(request):
     return render(request, 'home.html')
+
+@login_required(login_url='login')
+def createConference(request):
+    form = ConferenceForm
+    if request.method == 'POST':
+        form = ConferenceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+        else:
+            messages.error(request, 'An error occured during conference creation')
+
+    return render(request, 'conference.html', {'form':form})

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="margin-top: 20px;" class="container">
+    <h2 style="text-align: center;">{{talk.title}}</h2>
+    {% if request.user == talk.host %}
+    <p style="text-align: right;"><a href="{% url 'edit-talk' talk.pk %}">Edit talk</a></p>
+    {% endif %}
+    <p style="text-align: right;">{{conference}} Conference</p> 
+    <div>
+        {{talk.description}}
+        <ul>
+            <li>Duration: {{talk.duration}}</li>
+            <li>Date and Time: {{talk.date_time}}</li>
+        </ul>
+        <p>Talk Host: {{talk.host}}</p>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <h2>Speakers</h2>
+
+           
+            {% if talk.speakers.all %}
+             {% if request.user == talk.host %}
+            <p><a href="{% url 'remove-speaker' talk_id=talk.id%}">Remove speaker</a></p>
+            {% endif %}
+            <ul>
+                {% for speaker in talk.speakers.all %}
+                <li><a href="">{{speaker.full_name}} - {{speaker.email}}</a></li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>There are no speakers</p>
+            <p><a href="{% url 'add-speaker' talk.id %}">Add speakers</a></p>
+            {% endif %}
+        </div>
+        <div class="col">
+            <h2>Participants</h2>
+            {% if talk.participants.all %}
+            <ul>
+                {% for participant in talk.participants.all %}
+                <li><a href="">{{participant.full_name}} - {{participant.email}}</a></li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>There are no participants</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

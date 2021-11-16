@@ -3,7 +3,18 @@
 {% block content %}
     <div style="margin-top: 20px;" class="container">
         <h2 style="text-align: center;">{{conference.title}}</h2>
+        {% if request.user == conference.host %}
         <p style="text-align:right;"><a href="{% url 'edit-conference' conference.id %}">Edit conference</a></p>
+        {% endif %}
+        <p>{{conference.host}}</p>
+        <div>
+            {{conference.description}}
+        </div>
+        <P>{{conference.start_date}} - {{conference.end_date}}</P>
+
+        {% for talk in talks %}
+        <h4><a href="{% url 'view-talk' talk.pk %}">{{talk.title}}</a></h4>
+        {% endfor %}
     </div>
 
 {% endblock %}

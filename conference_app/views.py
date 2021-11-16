@@ -77,7 +77,7 @@ def createConference(request):
 def editConference(request, conference_id):
     conference = Conference.objects.get(pk=conference_id)
     if request.user == conference.host:
-        form = PackagesForm(instance=conference)
+        form = ConferenceForm(instance=conference)
         if request.method == 'POST':
             form = ConferenceForm(request.POST, instance=conference)
             if form.is_valid():
@@ -89,8 +89,82 @@ def editConference(request, conference_id):
 
 def viewConference(request, conference_id):
     conference = Conference.objects.get(pk=conference_id)
-    talks = conference.talk_set.all()
+    talks = Talk.objects.filter(conference=conference)
     context = {'conference':conference, 'talks':talks}
     return render(request, 'view-conference.html', context)
 
+@login_required(login_url='login')
+def createTalk(request):
+    form = TalkForm
+    if request.method == 'POST':
+        form = Talk(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.host = request.user  
+            form.save()
+            return redirect('home')
+        else:
+            messages.error(request, 'An error occured during talk creation')
+
+    return render(request, 'talk.html', {'form':form})
+
+
+@login_required(login_url='login')
+def editTalk(request, talk_id):
+    talk = Talk.objects.get(pk=talk_id)
+    if request.user == talk.host:
+        form = TalkForm(instance=talk)
+        if request.method == 'POST':
+            form = TalkForm(request.POST, instance=talk)
+            if form.is_valid():
+                form.save()
+                return redirect ('home')
+        return render(request, 'talk.html', {'form':form})
+    else:
+        return redirect('home')
+
+@login_required(login_url='login')
+def addSpeaker(request, talk_id):
+    form = AddSpeakerForm
+    talk = Talk.objects.get(pk=talk_id)
+    if request.user == talk.host:
+        if request.method == 'POST':
+            speaker = request.POST.get('speakers')
+            talk.speakers.add(speaker)
+            return redirect ('view-talk', talk_id=talk.id)
+        return render(request, 'speaker.html', {'form':form})
+    else:
+        return redirect('home')
+
+@login_required(login_url='login')
+def removeSpeaker(request, talk_id):
+    form = RemoveSpeakerForm
+    talk = Talk.objects.get(pk=talk_id)
+    if request.user == talk.host:
+        if request.method == 'POST':
+            speaker = request.POST.get('speakers')
+            talk.speakers.remove(speaker)
+            return redirect ('view-talk', talk_id=talk.id)
+        return render(request, 'speaker.html', {'form':form})
+    else:
+        return redirect('home')
+
+def viewTalk(request, talk_id):
+    talk = Talk.objects.get(pk=talk_id)
+    conference = talk.conference
+    context = {'conference':conference, 'talk':talk}
+    return render(request, 'view-talk.html', context)
+
+@login_required(login_url='login')
+def addParticipant(request, talk_id):
+    form = AddSpeakerForm
+    talk = Talk.objects.get(pk=talk_id)
+    if request.user == talk.host:
+        if request.method == 'POST':
+            speaker = request.POST.get('speakers')
+            talk.speakers.add(speaker)
+            return redirect ('view-talk', talk_id=talk.id)
+        return render(request, 'speaker.html', {'form':form})
+    else:
+        return redirect('home')
 

@@ -157,14 +157,28 @@ def viewTalk(request, talk_id):
 
 @login_required(login_url='login')
 def addParticipant(request, talk_id):
-    form = AddSpeakerForm
+    form = AddParticipantForm
     talk = Talk.objects.get(pk=talk_id)
     if request.user == talk.host:
         if request.method == 'POST':
-            speaker = request.POST.get('speakers')
-            talk.speakers.add(speaker)
+            participant = request.POST.get('participants')
+            talk.participants.add(participant)
             return redirect ('view-talk', talk_id=talk.id)
-        return render(request, 'speaker.html', {'form':form})
+        return render(request, 'participants.html', {'form':form})
+    else:
+        return redirect('home')
+
+
+@login_required(login_url='login')
+def removeParticipant(request, talk_id):
+    form = RemoveParticipantForm
+    talk = Talk.objects.get(pk=talk_id)
+    if request.user == talk.host:
+        if request.method == 'POST':
+            participant = request.POST.get('participants')
+            talk.participants.remove(participant)
+            return redirect ('view-talk', talk_id=talk.id)
+        return render(request, 'participants.html', {'form':form})
     else:
         return redirect('home')
 

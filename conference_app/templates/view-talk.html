@@ -38,6 +38,9 @@
         <div class="col">
             <h2>Participants</h2>
             {% if talk.participants.all %}
+            {% if request.user == talk.host or talk.speakers %}
+            <p><a href="{% url 'remove-participant' talk_id=talk.id%}">Remove participant</a></p>
+            {% endif %}
             <ul>
                 {% for participant in talk.participants.all %}
                 <li><a href="">{{participant.full_name}} - {{participant.email}}</a></li>
@@ -45,6 +48,8 @@
             </ul>
             {% else %}
             <p>There are no participants</p>
+            <p><a href="{% url 'add-participant' talk.id %}">Add participant</a></p>
+    
             {% endif %}
         </div>
     </div>

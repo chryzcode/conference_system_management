@@ -57,7 +57,7 @@ class TalkForm(ModelForm):
         }
 
         def __init__(self, *args, **kwargs):
-            super(Talk, self).__init__(*args, **kwargs)
+            super(TalkForm, self).__init__(*args, **kwargs)
 
 class AddSpeakerForm(ModelForm):
     class Meta:
@@ -69,7 +69,7 @@ class AddSpeakerForm(ModelForm):
         }
 
         def __init__(self, *args, **kwargs):
-            super(Talk, self).__init__(*args, **kwargs)
+            super(AddSpeakerForm, self).__init__(*args, **kwargs)
 
 class RemoveSpeakerForm(ModelForm):
     class Meta:
@@ -81,7 +81,7 @@ class RemoveSpeakerForm(ModelForm):
         }
 
         def __init__(self, *args, **kwargs):
-            super(Talk, self).__init__(*args, **kwargs)
+            super(RemoveSpeakerForm, self).__init__(*args, **kwargs)
 
         
 class AddParticipantForm(ModelForm):
@@ -94,9 +94,9 @@ class AddParticipantForm(ModelForm):
         }
 
         def __init__(self, *args, **kwargs):
-            super(Talk, self).__init__(*args, **kwargs)
+            super(AddParticipantForm, self).__init__(*args, **kwargs)
 
-class RemoveParticipantsForm(ModelForm):
+class RemoveParticipantForm(ModelForm):
     class Meta:
         model = Talk
         fields = ['participants']
@@ -106,5 +106,5 @@ class RemoveParticipantsForm(ModelForm):
         }
 
         def __init__(self, *args, **kwargs):
-            super(Talk, self).__init__(*args, **kwargs)
+            super(RemoveParticipantsForm, self).__init__(*args, **kwargs)
 

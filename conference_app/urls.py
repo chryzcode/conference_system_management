@@ -14,4 +14,6 @@ urlpatterns = [
     path('edit-talk/<str:talk_id>/', views.editTalk, name='edit-talk'),
     path('add-speaker/<str:talk_id>/', views.addSpeaker, name='add-speaker'),
     path('remove-speaker/<str:talk_id>/', views.removeSpeaker, name='remove-speaker'),
+    path('add-participants/<str:talk_id>/', views.addParticipant, name='add-participant'),
+    path('remove-participant/<str:talk_id>/', views.removeParticipant, name='remove-participant'),
     ]   

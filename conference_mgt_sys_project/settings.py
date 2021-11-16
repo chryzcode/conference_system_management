@@ -91,13 +91,15 @@ DATABASES = {
     'default': {
         # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd6jn33vnufle69',
-        'USER': 'menpennivgkznd',
-        'PASSWORD': '01cff1d70aedb7fc3327690fa88a68726ebb9385d18d923ce4a11c2b64a1dfdf',
-        'HOST': 'ec2-3-230-149-158.compute-1.amazonaws.com',
+        'NAME': 'd1obuu3h3rmdtv',
+        'USER': 'zdblpiuqitvsuy',
+        'PASSWORD': 'aa0b5bfd42de09fc9776d9fd7618e2c9a3d56dd96e320cadc877eff0520a02cc',
+        'HOST': 'ec2-3-218-47-9.compute-1.amazonaws.com',
         'POST': '5432',
     }
 }
+
+
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -147,3 +149,5 @@ django_heroku.settings(locals())
 
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_REDIRECT_URL = 'home'
+
+# CONN_MAX_AGE=0

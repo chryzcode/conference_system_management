@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import *
 from django.contrib.auth.decorators import login_required
+from .models import *
 
 
 # Create your views here.
@@ -52,7 +53,9 @@ def logoutUser(request):
     return redirect('home')
 
 def home(request):
-    return render(request, 'home.html')
+    conferences = Conference.objects.all()
+    context = {'conferences':conferences}
+    return render(request, 'home.html', context)
 
 @login_required(login_url='login')
 def createConference(request):
@@ -60,9 +63,34 @@ def createConference(request):
     if request.method == 'POST':
         form = ConferenceForm(request.POST)
         if form.is_valid():
+            form = form.save(commit=False)
+            form.host = request.user  
             form.save()
             return redirect('home')
         else:
             messages.error(request, 'An error occured during conference creation')
 
     return render(request, 'conference.html', {'form':form})
+
+
+@login_required(login_url='login')
+def editConference(request, conference_id):
+    conference = Conference.objects.get(pk=conference_id)
+    if request.user == conference.host:
+        form = PackagesForm(instance=conference)
+        if request.method == 'POST':
+            form = ConferenceForm(request.POST, instance=conference)
+            if form.is_valid():
+                form.save()
+                return redirect ('view-conference', pk=conference_id)
+        return render(request, 'conference.html', {'form':form})
+    else:
+        return redirect('view-conference', pk=conference_id)
+
+def viewConference(request, conference_id):
+    conference = Conference.objects.get(pk=conference_id)
+    talks = conference.talk_set.all()
+    context = {'conference':conference, 'talks':talks}
+    return render(request, 'view-conference.html', context)
+
+

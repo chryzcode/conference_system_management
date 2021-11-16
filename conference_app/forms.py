@@ -32,13 +32,9 @@ class ConferenceForm(ModelForm):
         widgets={
             'title':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Conference title'}),
             'description':forms.Textarea(attrs={'class':'form-control', 'placeholder':'Conference description'}),
-            'start_date':forms.Textarea(attrs={'class':'form-control',  'placeholder':'The first day of the conference'}),
-            'end_date':forms.Textarea(attrs={'class':'form-control',  'placeholder':'The last day of the conference'}),
+            'start_date':forms.TextInput(attrs={'class':'form-control',  'placeholder':'The first day of the conference'}),
+            'end_date':forms.TextInput(attrs={'class':'form-control',  'placeholder':'The last day of the conference'}),
         }
-
-        def user (self, host):
-            self.host = host.id
-
         def __init__(self, *args, **kwargs):
             super(UserWalletForm, self).__init__(*args, **kwargs)
 

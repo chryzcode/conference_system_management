@@ -1,34 +1,34 @@
 {% extends 'base.html' %} {% block content %}
 <div class="login-register-background">
 
-  <div class="login-container">
+  <div class="container">
   {% if messages %} {% for message in messages %}
   <p class="messages">{{message}}</p>
   {% endfor %} {% endif %}
   <h3 style="text-align: center; margin-top: 20px;">Sign In</h3>
   <form action="" method="post">
     {% csrf_token %}
-    <div class="container">
       <div>
-        <label style="font-size: 16px; margin: 7px 0; color: white;">Email</label>
+        <label style="font-size: 16px; margin: 7px 0;">Email</label>
         <input class="form-control" id="email" name="email" type="text" placeholder="e.g. johndoe@gmail.com" />
       </div>
 
       <div>
-        <label style="font-size: 16px; margin: 7px 0; color: white;" for="password">Password</label>
+        <label style="font-size: 16px; margin: 7px 0;" for="password">Password</label>
         <input
           class="form-control"
           id="password"
           name="password"
           type="password"
+          placeholder="o0-g9fhgu90hjgfhjmgf"
         />
       </div>
       <div style="text-align: center; margin: 15px 0">
-        <span style="display: block; color: white;"
+        <span style="display: block;"
           >Haven't signed up yet? <a href="{% url 'register' %}">Sign Up</a></span
         >
       </div>
-    </div>
+
     <button class="btn btn-secondary btn-sm" type="submit">
       Login
     </button>

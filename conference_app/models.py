@@ -16,6 +16,7 @@ class User(AbstractUser):
 
 #the conference model
 class Conference(models.Model):
+    host = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=450)
     description = models.TextField()
     start_date = models.DateField()

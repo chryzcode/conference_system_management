@@ -24,6 +24,7 @@ class Conference(models.Model):
     def __str__(self):
         return self.title
 
+#the talk model
 class Talk(models.Model):
     host = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=450)

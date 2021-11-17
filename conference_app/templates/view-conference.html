@@ -12,9 +12,14 @@
         </div>
         <P>{{conference.start_date}} - {{conference.end_date}}</P>
 
+        {% if talks %}
+        <h3 style="text-align: center;">Talks</h3>
         {% for talk in talks %}
         <h4><a href="{% url 'view-talk' talk.pk %}">{{talk.title}}</a></h4>
         {% endfor %}
+        {% else %}
+        <h4 style="text-align: center;">There are no Talks yet, <span><a href="{% url 'create-talk' %}"> add a talk</a></span></h4>
+        {% endif %}
     </div>
 
 {% endblock %}

@@ -82,10 +82,10 @@ def editConference(request, conference_id):
             form = ConferenceForm(request.POST, instance=conference)
             if form.is_valid():
                 form.save()
-                return redirect ('view-conference', pk=conference_id)
+                return redirect ('home')
         return render(request, 'conference.html', {'form':form})
     else:
-        return redirect('view-conference', pk=conference_id)
+        return redirect('home')
 
 def viewConference(request, conference_id):
     conference = Conference.objects.get(pk=conference_id)

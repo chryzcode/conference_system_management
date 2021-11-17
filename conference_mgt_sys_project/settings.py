@@ -26,7 +26,7 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['conference-mgt-sys-project.herokuapp.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['the-conference-management-app.herokuapp.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -91,13 +91,15 @@ DATABASES = {
     'default': {
         # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd1obuu3h3rmdtv',
-        'USER': 'zdblpiuqitvsuy',
-        'PASSWORD': 'aa0b5bfd42de09fc9776d9fd7618e2c9a3d56dd96e320cadc877eff0520a02cc',
-        'HOST': 'ec2-3-218-47-9.compute-1.amazonaws.com',
+        'NAME': 'db2lbuema6seb6',
+        'USER': 'didylipenybtxz',
+        'PASSWORD': '975c4939b47cf00f25f8df41be0a597c4d751e5cb0219574797f96be6f0123c3',
+        'HOST': 'ec2-54-146-82-179.compute-1.amazonaws.com',
         'POST': '5432',
     }
 }
+
+
 
 
 # Password validation

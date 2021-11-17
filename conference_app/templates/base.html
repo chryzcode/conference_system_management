@@ -55,15 +55,23 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'create-talk' %}">Create Talk </a>
             </li>
+             </ul>
+
             {% if user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'logout' %}">Logout</a>
             </li>
             {% else %}
-            <li>
+         
+
+          <li>
               <a class="nav-link" href="{% url 'login' %}">Login</a>
             </li>
-          </ul>
+
+          <li>
+              <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
+          </li>
+         
           {% endif %}}
           <!-- <ul class="nav justify-content-end">
         <li class="nav-item"><a class="nav-link" href="{% url 'register'%}">Sign up</a></li>

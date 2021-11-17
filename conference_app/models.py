@@ -33,7 +33,7 @@ class Talk(models.Model):
     description = models.TextField()
     speakers = models.ManyToManyField(User, related_name='speakers', blank=True)
     participants = models.ManyToManyField(User, related_name='participants', blank=True)
-    conference = models.ForeignKey(Conference, on_delete=models.CASCADE, default=1)
+    conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
     date_time = models.DateTimeField()
     duration = models.CharField(max_length=150)
 

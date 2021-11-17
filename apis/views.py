@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from conference_app.models import *
+from conference_app.models import Conference, Talk, User
 from .serializers import *
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
@@ -41,7 +41,7 @@ def getRoutes(request):
             'description': 'Creates a new conference with data sent in post request'
         },
         {
-            'Endpoint': '/create-talk/',
+            'Endpoint': '/create-talk/confernce_id',
             'method': 'POST',
             'body': {'body': ""},
             'description': 'Creates a new talk with data sent in post request'
@@ -60,13 +60,13 @@ def getRoutes(request):
         },
         {
             'Endpoint': '/add-speaker/',
-            'method': 'PUT',
+            'method': 'POST',
             'body': {'body': ""},
             'description': 'add speakers to a talk'
         },
         {
             'Endpoint': '/add-participant/',
-            'method': 'PUT',
+            'method': 'POST',
             'body': {'body': ""},
             'description': 'add speakers to a talk'
         },
@@ -114,12 +114,71 @@ def create_conference(request):
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
-def create_talk(request):
+def create_talk(request, conference_id):
     serializer = TalkSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+@permission_classes((IsAuthenticated,))
+def edit_conference(request, conference_id):
+    conference = Conference.objects.get(id=conference_id)
+    if request.user.id == conference.host.id:
+        serializer = ConferenceSerializer(conference, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response("unathorized", status=status.HTTP_401_UNAUTHORIZED)
+
+@api_view(['PUT'])
+@permission_classes((IsAuthenticated,))
+def edit_talk(request, talk_id):
+    talk = Talk.objects.get(id=talk_id)
+    if request.user.id == talk.host.id:
+        serializer = TalkSerializer(talk, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response("unathorized", status=status.HTTP_401_UNAUTHORIZED)
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+def add_speaker(request, talk_id):
+    talk = Talk.objects.get(id=talk_id)
+    print('This is talk:', talk)
+    conference = Conference.objects.filter(id=talk.conference.id)
+    print('This is conference:', conference)
+    if request.user.id == talk.host.id:
+        serializer = SpeakerSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response("unathorized", status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+def get_a_talk_speakers(request, talk_id):
+    talk = Talk.objects.get(id=talk_id)
+    if request.user.id == talk.host.id:
+        speaker = talk
+    
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+def get_conference_talks(request, conference_id):
+    conference = Conference.objects.get(id=conference_id)
+    talks = Talk.objects.filter(conference=conference)
+    serializer = TalkSerializer(talks, many=True)
+    return Response(serializer.data)
+
+
+
 
 
 

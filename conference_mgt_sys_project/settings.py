@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'conference_app', 
+    'apis',
+
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

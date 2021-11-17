@@ -10,3 +10,13 @@ class TalkSerializer(ModelSerializer):
     class Meta:
         model = Talk
         fields = '__all__'
+
+class SpeakerSerializer(ModelSerializer):
+    class Meta:
+        model = Talk
+        fields = ('speakers')
+
+class ParticipantSerializer(ModelSerializer):
+    class Meta:
+        model = Talk
+        fields = ('participants')

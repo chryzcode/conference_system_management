@@ -20,5 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('conference_app.urls')),
     path('', include('django.contrib.auth.urls')),
-    path('', include('apis.urls')),               
+    path('api/', include('apis.urls')),               
 ]

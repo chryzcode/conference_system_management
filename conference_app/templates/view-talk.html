@@ -23,6 +23,7 @@
            
             {% if talk.speakers.all %}
              {% if request.user == talk.host %}
+             <p><a href="{% url 'add-speaker' talk_id=talk.id%}">Add speaker</a></p>
             <p><a href="{% url 'remove-speaker' talk_id=talk.id%}">Remove speaker</a></p>
             {% endif %}
             <ul>
@@ -39,6 +40,7 @@
             <h2>Participants</h2>
             {% if talk.participants.all %}
             {% if request.user == talk.host or talk.speakers %}
+             <p><a href="{% url 'add-participant' talk_id=talk.id%}">Add participant</a></p>
             <p><a href="{% url 'remove-participant' talk_id=talk.id%}">Remove participant</a></p>
             {% endif %}
             <ul>

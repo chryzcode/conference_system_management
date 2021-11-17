@@ -42,13 +42,12 @@ class ConferenceForm(ModelForm):
 class TalkForm(ModelForm):
     class Meta:
         model = Talk
-        exclude = ['host']
-        fields = ['title', 'description', 'conference', 'speakers', 'participants', 'date_time', 'duration']
+        exclude = ['host', 'conference']
+        fields = ['title', 'description', 'speakers', 'participants', 'date_time', 'duration']
 
         widgets={
             'title':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Talk title'}),
             'description':forms.Textarea(attrs={'class':'form-control', 'placeholder':'Talk description'}),
-            'conference':forms.Select(choices=Conference.objects.all().values_list('title', 'title'), attrs={'class':'form-control'}),
             'date_time':forms.DateTimeInput(attrs={'class':'form-control'}),
             'speakers':forms.SelectMultiple(choices=User.objects.all(), attrs={'class':'form-control'}),
             'participants':forms.SelectMultiple(choices=User.objects.all(), attrs={'class':'form-control'}),

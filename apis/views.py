@@ -84,3 +84,42 @@ def getRoutes(request):
         },
     ]
     return Response(routes)
+
+@api_view(['GET'])
+def getAllConferences(request):
+    conferences = Conference.objects.all()
+    serializer = ConferenceSerializer(conferences, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def a_conference(request, conference_id):
+    conference = Conference.objects.get(id=conference_id)
+    serializer = ConferenceSerializer(conference)
+    return Response(serializer.data)
+
+@api_view(['GET']) 
+def a_talk(request, talk_id):
+    talk = Talk.objects.get(id=talk_id)
+    serializer = TalkSerializer(talk)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+def create_conference(request):
+    serializer = ConferenceSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+def create_talk(request):
+    serializer = TalkSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+

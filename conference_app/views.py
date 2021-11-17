@@ -94,13 +94,15 @@ def viewConference(request, conference_id):
     return render(request, 'view-conference.html', context)
 
 @login_required(login_url='login')
-def createTalk(request):
+def createTalk(request, conference_id):
     form = TalkForm
+    conference = Conference.objects.get(pk=conference_id)
     if request.method == 'POST':
-        form = Talk(request.POST)
+        form = TalkForm(request.POST)
         if form.is_valid():
             form = form.save(commit=False)
-            form.host = request.user  
+            form.host = request.user 
+            form.conference = conference
             form.save()
             return redirect('home')
         else:

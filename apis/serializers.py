@@ -19,7 +19,7 @@ class AddSpeakerSerializer(ModelSerializer):
         fields = ['speakers']
 
 class SpeakerSerializer(ModelSerializer):
-    speakers = SpeakersSerializer(many=True)
+    speakers = AddSpeakerSerializer(many=True)
     class Meta:
         model = Talk
         fields = ['speakers']
@@ -30,7 +30,7 @@ class AddParticipantSerializer(ModelSerializer):
         fields = ('participants',)
 
 class ParticipantSerializer(ModelSerializer):
-    participants = ParticipantsSerializer(many=True)
+    participants = AddParticipantSerializer(many=True)
     class Meta:
         model = Talk
         fields = ('participants',)

@@ -59,25 +59,25 @@ def getRoutes(request):
             'description': 'Update an existing talk'
         },
         {
-            'Endpoint': '/add-speaker/',
+            'Endpoint': '/add-speaker/talk_id',
             'method': 'POST',
             'body': {'body': ""},
             'description': 'add speakers to a talk'
         },
         {
-            'Endpoint': '/add-participant/',
+            'Endpoint': '/add-participant/talk_id',
             'method': 'POST',
             'body': {'body': ""},
             'description': 'add speakers to a talk'
         },
         {
-            'Endpoint': '/remove-speaker/',
+            'Endpoint': '/remove-speaker/talk_id',
             'method': 'PUT',
             'body': {'body': ""},
             'description': 'remove speakers from a talk'
         },
         {
-            'Endpoint': '/remove-participant/',
+            'Endpoint': '/remove-participant/talk_id',
             'method': 'PUT',
             'body': {'body': ""},
             'description': 'remove participants from a talk'
@@ -225,7 +225,14 @@ def get_talk_speakers(request, talk_id):
     talk = Talk.objects.get(id=talk_id)
     speakers = talk.speakers.all()
     serializer = SpeakerSerializer(speakers, many=True)
-    print('This is serializer: ', serializer.data)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+def get_talk_participants(request, talk_id):
+    talk = Talk.objects.get(id=talk_id)
+    participants = talk.participants.all()
+    serializer = ParticipantSerializer(participants, many=True)
     return Response(serializer.data)
     
 
@@ -237,7 +244,6 @@ def get_conference_talks(request, conference_id):
     serializer = TalkSerializer(talks, many=True)
     return Response(serializer.data)
 
-# @api_view(['POST'])
 
 
 

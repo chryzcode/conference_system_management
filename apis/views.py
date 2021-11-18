@@ -82,6 +82,12 @@ def getRoutes(request):
             'body': {'body': ""},
             'description': 'remove participants from a talk'
         },
+        {
+            'Endpoint': '/get-speaker/talk_id',
+            'method': 'PUT',
+            'body': {'body': ""},
+            'description': 'get speakers in a participants from a talk'
+        },
     ]
     return Response(routes)
 
@@ -153,13 +159,9 @@ def add_speaker(request, talk_id):
     conference = Conference.objects.filter(pk=talk.conference.id)
     print('This is conference:', conference)
     if request.user.id == talk.host.id:
-        serializer = SpeakersSerializer(data=request.data)
+        serializer = AddSpeakerSerializer(data=request.data)
         if serializer.is_valid():
-            talk.speakers.add(serializer)
-            talk.save()
-            print('All Speakers: ', talk.speakers.all())
             serializer.save()
-            print('Serializer: ', serializer)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     return Response("unathorized", status=status.HTTP_401_UNAUTHORIZED)
@@ -176,9 +178,7 @@ def remove_speaker(request, talk_id):
         if serializer.is_valid():
             talk.speakers.remove(serializer.data)
             talk.save()
-            print('All Speakers: ', talk.speakers.all())
             serializer.save()
-            print('Serializer: ', serializer)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     return Response("unathorized", status=status.HTTP_401_UNAUTHORIZED)
@@ -192,11 +192,8 @@ def add_participant(request, talk_id):
     conference = Conference.objects.filter(pk=talk.conference.id)
     print('This is conference:', conference)
     if request.user.id == talk.host.id:
-        serializer = ParticipantSerializer(data=request.data)
+        serializer = AddParticipantSerializer(data=request.data)
         if serializer.is_valid():
-            # talk.participants.add(serializer)
-            # talk.save()
-            # print('All participants: ', talk.participants.all())
             serializer.save()
             print('Serializer: ', serializer)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -204,7 +201,7 @@ def add_participant(request, talk_id):
     return Response("unathorized", status=status.HTTP_401_UNAUTHORIZED)
 
 
-@api_view(['POST'])
+@api_view(['PUT'])
 @permission_classes((IsAuthenticated,))
 def remove_participant(request, talk_id):
     talk = Talk.objects.get(pk=talk_id)
@@ -216,9 +213,7 @@ def remove_participant(request, talk_id):
         if serializer.is_valid():
             talk.participants.remove(serializer)
             talk.save()
-            print('All participants: ', talk.participants.all())
             serializer.save()
-            print('Serializer: ', serializer)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     return Response("unathorized", status=status.HTTP_401_UNAUTHORIZED)
@@ -226,7 +221,7 @@ def remove_participant(request, talk_id):
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
-def get_a_talk_speakers(request, talk_id):
+def get_talk_speakers(request, talk_id):
     talk = Talk.objects.get(id=talk_id)
     speakers = talk.speakers.all()
     serializer = SpeakerSerializer(speakers, many=True)

@@ -13,7 +13,7 @@ class TalkSerializer(ModelSerializer):
         fields = '__all__'
  
  
-class SpeakersSerializer(ModelSerializer):
+class AddSpeakerSerializer(ModelSerializer):
     class Meta:
         model = Talk
         fields = ['speakers']
@@ -24,9 +24,13 @@ class SpeakerSerializer(ModelSerializer):
         model = Talk
         fields = ['speakers']
 
-
+class AddParticipantSerializer(ModelSerializer):
+    class Meta:
+        model = Talk
+        fields = ('participants',)
 
 class ParticipantSerializer(ModelSerializer):
+    participants = ParticipantsSerializer(many=True)
     class Meta:
         model = Talk
         fields = ('participants',)

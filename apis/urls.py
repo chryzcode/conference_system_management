@@ -11,7 +11,7 @@ urlpatterns = [
     path('edit-conference/<str:conference_id>/', views.edit_conference, name='edit-conference'),
     path('edit-talk/<str:talk_id>/', views.edit_talk, name='edit-talk'),
     path('add-speaker/<str:talk_id>/', views.add_speaker, name='add-speaker'),
-    path('get-speaker/<str:talk_id>/', views.get_a_talk_speakers, name='get-speaker'),
+    path('get-speaker/<str:talk_id>/', views.get_talk_speakers, name='get-speaker'),
     path('conference/<str:conference_id>/talks/', views.get_conference_talks, name='get-conference-talks'),
     path('remove-speaker/<talk_id>/', views.remove_speaker, name='remove-speaker'),
 ]

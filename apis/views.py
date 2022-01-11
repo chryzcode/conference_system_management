@@ -83,7 +83,13 @@ def getRoutes(request):
             'description': 'remove participants from a talk'
         },
         {
-            'Endpoint': '/get-speaker/talk_id',
+            'Endpoint': '/get-speakers/talk_id',
+            'method': 'PUT',
+            'body': {'body': ""},
+            'description': 'get speakers in a talk'
+        },
+        {
+            'Endpoint': '/get-participants/talk_id',
             'method': 'PUT',
             'body': {'body': ""},
             'description': 'get speakers in a talk'

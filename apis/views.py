@@ -23,7 +23,7 @@ def getRoutes(request):
             'description': 'Returns a single conference object'
         },
         {
-            'Endpoint': '/conference_id/talks',
+            'Endpoint': 'conference/conference_id/talks',
             'method': 'GET',
             'body': None,
             'description': 'Returns an array all the talks in a conference'
@@ -86,7 +86,7 @@ def getRoutes(request):
             'Endpoint': '/get-speaker/talk_id',
             'method': 'PUT',
             'body': {'body': ""},
-            'description': 'get speakers in a participants from a talk'
+            'description': 'get speakers in a talk'
         },
     ]
     return Response(routes)
@@ -224,7 +224,7 @@ def remove_participant(request, talk_id):
 def get_talk_speakers(request, talk_id):
     talk = Talk.objects.get(id=talk_id)
     speakers = talk.speakers.all()
-    serializer = SpeakerSerializer(speakers, many=True)
+    serializer = UserSerializer(speakers, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
@@ -232,7 +232,7 @@ def get_talk_speakers(request, talk_id):
 def get_talk_participants(request, talk_id):
     talk = Talk.objects.get(id=talk_id)
     participants = talk.participants.all()
-    serializer = ParticipantSerializer(participants, many=True)
+    serializer = UserSerializer(participants, many=True)
     return Response(serializer.data)
     
 

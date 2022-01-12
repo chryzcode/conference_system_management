@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from conference_app.models import Conference, Talk, User
@@ -176,9 +176,8 @@ def add_speaker(request, talk_id):
 @permission_classes((IsAuthenticated,))
 def remove_speaker(request, talk_id):
     talk = Talk.objects.get(pk=talk_id)
-    print('This is talk:', talk)
     conference = Conference.objects.filter(pk=talk.conference.id)
-    print('This is conference:', conference)
+
     if request.user.id == talk.host.id:
         serializer = SpeakerSerializer(data=request.data)
         if serializer.is_valid():
@@ -211,16 +210,14 @@ def add_participant(request, talk_id):
 @permission_classes((IsAuthenticated,))
 def remove_participant(request, talk_id):
     talk = Talk.objects.get(pk=talk_id)
-    print('This is talk:', talk)
-    conference = Conference.objects.filter(pk=talk.conference.id)
-    print('This is conference:', conference)
     if request.user.id == talk.host.id:
-        serializer = ParticipantSerializer(data=request.data)
+        serializer = ParticipantSerializer(data=request.data) 
         if serializer.is_valid():
-            talk.participants.remove(serializer)
+            participant_email = serializer.data['participant']
+            participant = get_object_or_404(User, email=participant_email)
+            talk.participants.remove(participant)
             talk.save()
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response({"message":f"Participant with email {participant_email} removed"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     return Response("unathorized", status=status.HTTP_401_UNAUTHORIZED)
 

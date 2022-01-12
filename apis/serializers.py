@@ -38,13 +38,8 @@ class AddParticipantSerializer(ModelSerializer):
         model = Talk
         fields = ('participants',)
 
-class ParticipantSerializer(ModelSerializer):
-    participants = serializers.IntegerField(read_only=True)
-    class Meta:
-        model = Talk
-        fields = ('participants',)
+class ParticipantSerializer(serializers.Serializer):
+    participant = serializers.EmailField()
 
 class SpeakerSerializer(ModelSerializer):
-    class Meta:
-        model = Talk
-        fields = ['speakers']
+    speaker = serializers.CharField()

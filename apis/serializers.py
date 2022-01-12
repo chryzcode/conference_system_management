@@ -7,12 +7,6 @@ class UserSerializer(ModelSerializer):
         model = User
         fields = ('username', 'email', 'full_name')
 
-class UserIdSerializer(ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id',)
-    
-
 class ConferenceSerializer(ModelSerializer):
     host = UserSerializer(read_only=True)
     class Meta:
@@ -28,6 +22,13 @@ class TalkSerializer(ModelSerializer):
  
  
 class AddSpeakerSerializer(ModelSerializer):
+    speakers = serializers.EmailField()
+    class Meta:
+        model = Talk
+        fields = ['speakers']
+
+class RemoveSpeakerSerializer(ModelSerializer):
+    speakers = serializers.EmailField()
     class Meta:
         model = Talk
         fields = ['speakers']

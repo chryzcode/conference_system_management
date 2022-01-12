@@ -162,26 +162,28 @@ def edit_talk(request, talk_id):
 def add_speaker(request, talk_id):
     talk = Talk.objects.get(pk=talk_id)
     if request.user.id == talk.host.id:
-        serializer = SpeakerSerializer(data=request.data)
+        serializer = AddSpeakerSerializer(data=request.data)
         if serializer.is_valid():
-            
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            speaker_email = serializer.data['speakers']
+            speaker = get_object_or_404(User, email=speaker_email)
+            talk.speakers.add(speaker)
+            talk.save()
+            return Response({"message":f"Participant with email {speaker_email} added"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    return Response("unathorized", status=status.HTTP_401_UNAUTHORIZED)
+    return Response("unauthorized", status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['PUT'])
 @permission_classes((IsAuthenticated,))
 def remove_speaker(request, talk_id):
     talk = Talk.objects.get(pk=talk_id)
-    conference = Conference.objects.filter(pk=talk.conference.id)
     if request.user.id == talk.host.id:
-        serializer = SpeakerSerializer(data=request.data)
+        serializer = RemoveSpeakerSerializer(data=request.data)
         if serializer.is_valid():
-            talk.speakers.remove(serializer.data)
+            speaker_email = serializer.data['speakers']
+            speaker = get_object_or_404(User, email=speaker_email)
+            talk.speakers.remove(speaker)
             talk.save()
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response({"message":f"Participant with email {speaker_email} removed"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     return Response("unathorized", status=status.HTTP_401_UNAUTHORIZED)
 
@@ -194,7 +196,7 @@ def add_participant(request, talk_id):
         serializer = ParticipantSerializer(data=request.data)
         if serializer.is_valid():
             participant_email = serializer.data['participant']
-            participant = User.objects.get(email=participant_email)
+            participant = get_object_or_404(User, email=participant_email)
             talk.participants.add(participant)
             talk.save()
             print('Serializer: ', serializer)

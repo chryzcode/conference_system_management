@@ -184,3 +184,10 @@ def removeParticipant(request, talk_id):
     else:
         return redirect('home')
 
+
+def profile(request, username):
+    user = User.objects.get(username=username)
+    conferences = Conference.objects.filter(host=user)
+    context = {'user':user, 'conferences':conferences}
+    return render(request, 'profile.html', context)
+

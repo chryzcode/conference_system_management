@@ -45,7 +45,7 @@
             {% endif %}
             <ul>
                 {% for participant in talk.participants.all %}
-                <li><a href="">{{participant.full_name}} - {{participant.email}}</a></li>
+                <li><a href="{% url 'profile' user.username %}">{{participant.full_name}} - {{participant.email}}</a></li>
                 {% endfor %}
             </ul>
             {% else %}

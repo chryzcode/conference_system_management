@@ -16,4 +16,5 @@ urlpatterns = [
     path('remove-speaker/<str:talk_id>/', views.removeSpeaker, name='remove-speaker'),
     path('add-participants/<str:talk_id>/', views.addParticipant, name='add-participant'),
     path('remove-participant/<str:talk_id>/', views.removeParticipant, name='remove-participant'),
+    path('profile/<username>/', views.profile, name='profile'),
     ]   

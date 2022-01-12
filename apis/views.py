@@ -92,7 +92,7 @@ def getRoutes(request):
             'Endpoint': '/get-participants/talk_id',
             'method': 'PUT',
             'body': {'body': ""},
-            'description': 'get speakers in a talk'
+            'description': 'get participants in a talk'
         },
     ]
     return Response(routes)

@@ -6,7 +6,7 @@
         {% if request.user == conference.host %}
         <p style="text-align:right;"><a href="{% url 'edit-conference' conference.id %}">Edit conference</a></p>
         {% endif %}
-        <p>{{conference.host}}</p>
+        <p><a href="{% url 'profile' conference.host.username %}">{{conference.host}}</a></p>
         <div>
             {{conference.description}}
         </div>

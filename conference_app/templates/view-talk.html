@@ -28,7 +28,7 @@
             {% endif %}
             <ul>
                 {% for speaker in talk.speakers.all %}
-                <li><a href="">{{speaker.full_name}} - {{speaker.email}}</a></li>
+                <li><a href="{% url 'profile' speaker.username %}">{{speaker.full_name}} - {{speaker.email}}</a></li>
                 {% endfor %}
             </ul>
             {% else %}
@@ -45,7 +45,7 @@
             {% endif %}
             <ul>
                 {% for participant in talk.participants.all %}
-                <li><a href="{% url 'profile' user.username %}">{{participant.full_name}} - {{participant.email}}</a></li>
+                <li><a href="{% url 'profile' participant.username %}">{{participant.full_name}} - {{participant.email}}</a></li>
                 {% endfor %}
             </ul>
             {% else %}

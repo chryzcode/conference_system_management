@@ -39,6 +39,7 @@ class AddParticipantSerializer(ModelSerializer):
         fields = ('participants',)
 
 class ParticipantSerializer(ModelSerializer):
+    participants = serializers.IntegerField(read_only=True)
     class Meta:
         model = Talk
         fields = ('participants',)

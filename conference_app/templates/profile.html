@@ -1,9 +1,29 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block content %}
+<div style="margin-top: 20px" class="container">
+  <h2 style="text-align: center">{{user.full_name}}</h2>
+  <h3 style="text-align: center">Username: {{user.username}}</h3>
+  <h4 style="text-align: center">User Id: {{user.id}}</h4>
 
-{% block content %}
-<div style="margin-top: 20px;" class="container">
-    <h2>{{user.full_name}}</h2>
-
+  <div style="margin-top: 60px;">
+    <h2 style="text-align: center;">Conference Hosted</h2>
+    {% if conferences %}
+    <div class="row">
+      {% for conference in conferences %}
+      <div style="margin-bottom: 15px" class="col-sm-6">
+        <div style="height: 200px" class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{conference.title}}</h5>
+            <p class="card-text">{{conference.description}}</p>
+            <a href="{% url 'view-conference' conference.pk %}" class="btn btn-secondary">View Conference</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p>There are no conference</p>
+    {% endif %}
+  </div>
 </div>
 
 {% endblock %}

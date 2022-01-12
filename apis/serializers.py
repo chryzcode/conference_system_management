@@ -6,6 +6,11 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ('username', 'email', 'full_name')
+
+class UserIdSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id',)
     
 
 class ConferenceSerializer(ModelSerializer):
@@ -20,7 +25,6 @@ class TalkSerializer(ModelSerializer):
     class Meta:
         model = Talk
         fields = ('id', 'title', 'description', 'speakers', 'participants', 'date_time', 'duration')
-        # depth = 1
  
  
 class AddSpeakerSerializer(ModelSerializer):
@@ -35,14 +39,11 @@ class AddParticipantSerializer(ModelSerializer):
         fields = ('participants',)
 
 class ParticipantSerializer(ModelSerializer):
-    participants = AddParticipantSerializer(many=True)
     class Meta:
         model = Talk
-        fields = ('participants')
-        depth = 1
+        fields = ('participants',)
 
 class SpeakerSerializer(ModelSerializer):
-    # spakers = UserSerializer(many=True)
     class Meta:
         model = Talk
         fields = ['speakers']

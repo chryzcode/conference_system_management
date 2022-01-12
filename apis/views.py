@@ -208,21 +208,21 @@ def add_participant(request, talk_id):
 
 
 @api_view(['PUT'])
-@permission_classes((IsAuthenticated,))
+# @permission_classes((IsAuthenticated,))
 def remove_participant(request, talk_id):
     talk = Talk.objects.get(pk=talk_id)
     print('This is talk:', talk)
     conference = Conference.objects.filter(pk=talk.conference.id)
     print('This is conference:', conference)
-    if request.user.id == talk.host.id:
-        serializer = ParticipantSerializer(data=request.data)
-        if serializer.is_valid():
-            talk.participants.remove(serializer)
-            talk.save()
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    return Response("unathorized", status=status.HTTP_401_UNAUTHORIZED)
+    # if request.user.id == talk.host.id:
+    serializer = ParticipantSerializer(data=request.data)
+    if serializer.is_valid():
+        talk.participants.remove(serializer)
+        talk.save()
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # return Response("unathorized", status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['GET'])

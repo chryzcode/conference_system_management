@@ -32,14 +32,8 @@ class AddSpeakerSerializer(ModelSerializer):
         model = Talk
         fields = ['speakers']
 
-
-class AddParticipantSerializer(ModelSerializer):
-    class Meta:
-        model = Talk
-        fields = ('participants',)
-
 class ParticipantSerializer(serializers.Serializer):
     participant = serializers.EmailField()
 
 class SpeakerSerializer(ModelSerializer):
-    speaker = serializers.CharField()
+    speaker = serializers.EmailField()

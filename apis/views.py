@@ -161,12 +161,10 @@ def edit_talk(request, talk_id):
 @permission_classes((IsAuthenticated,))
 def add_speaker(request, talk_id):
     talk = Talk.objects.get(pk=talk_id)
-    print('This is talk:', talk)
-    conference = Conference.objects.filter(pk=talk.conference.id)
-    print('This is conference:', conference)
     if request.user.id == talk.host.id:
-        serializer = AddSpeakerSerializer(data=request.data)
+        serializer = SpeakerSerializer(data=request.data)
         if serializer.is_valid():
+            
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -177,7 +175,6 @@ def add_speaker(request, talk_id):
 def remove_speaker(request, talk_id):
     talk = Talk.objects.get(pk=talk_id)
     conference = Conference.objects.filter(pk=talk.conference.id)
-
     if request.user.id == talk.host.id:
         serializer = SpeakerSerializer(data=request.data)
         if serializer.is_valid():
@@ -193,15 +190,15 @@ def remove_speaker(request, talk_id):
 @permission_classes((IsAuthenticated,))
 def add_participant(request, talk_id):
     talk = Talk.objects.get(pk=talk_id)
-    print('This is talk:', talk)
-    conference = Conference.objects.filter(pk=talk.conference.id)
-    print('This is conference:', conference)
     if request.user.id == talk.host.id:
-        serializer = AddParticipantSerializer(data=request.data)
+        serializer = ParticipantSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            participant_email = serializer.data['participant']
+            participant = User.objects.get(email=participant_email)
+            talk.participants.add(participant)
+            talk.save()
             print('Serializer: ', serializer)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response({"message":f"Participant with email {participant_email} added"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     return Response("unathorized", status=status.HTTP_401_UNAUTHORIZED)
 

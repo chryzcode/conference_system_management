@@ -1,6 +1,6 @@
 # conference_system_management
 
-An interview task - a conference management system
+A conference management system
 
 - https://the-conference-management-app.herokuapp.com/
 
